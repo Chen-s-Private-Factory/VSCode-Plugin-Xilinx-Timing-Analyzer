@@ -1,6 +1,9 @@
 # Xilinx Timing Analyzer
 
-A VSCode extension for analyzing Xilinx .twr (Timing Report) files and visualizing critical timing paths.
+> NOTE: Every code and doc in this repo is created by **Github Copilot CLI** w/ **claude-sonnet-4.5** model
+> 
+
+A VSCode extension for analyzing Xilinx .twr (Timing Report) files and visualizing critical timing paths generated purely by AI.
 
 ## Features
 
