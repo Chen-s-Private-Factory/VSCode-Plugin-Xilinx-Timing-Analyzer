@@ -1,5 +1,163 @@
 # Xilinx Timing Analyzer - Setup Complete! ✅
 
+## Environment Setup
+
+### Prerequisites
+
+Before you begin, ensure you have:
+- **Node.js** 14.x or later ([Download](https://nodejs.org/))
+- **npm** 6.x or later (comes with Node.js)
+- **VSCode** 1.80.0 or later ([Download](https://code.visualstudio.com/))
+
+### Setting Up VSCode Extension Development Environment
+
+#### 1. Install Node.js and npm
+```bash
+# Verify installation
+node --version  # Should be v14.x or later
+npm --version   # Should be v6.x or later
+```
+
+#### 2. Install TypeScript Globally (Optional)
+```bash
+npm install -g typescript
+tsc --version
+```
+
+#### 3. Install Required VSCode Extensions (Optional but Recommended)
+In VSCode, install these extensions:
+- **ESLint** - For code linting
+- **Prettier** - For code formatting
+- **TypeScript and JavaScript Language Features** (built-in)
+
+#### 4. Clone and Setup Project
+```bash
+git clone https://github.com/Chen-s-Private-Factory/VSCode-Plugin-Xilinx-Timing-Analyzer.git
+cd VSCode-Plugin-Xilinx-Timing-Analyzer
+npm install
+```
+
+#### 5. Understanding package.json Dependencies
+```json
+{
+  "dependencies": {
+    "@hpcc-js/wasm": "^2.5.0"  // Graphviz for graph rendering
+  },
+  "devDependencies": {
+    "@types/node": "^20.x",     // Node.js type definitions
+    "@types/vscode": "^1.80.0", // VSCode API types
+    "typescript": "^5.1.6"      // TypeScript compiler
+  }
+}
+```
+
+#### 6. Project Build Scripts
+```bash
+# Compile TypeScript to JavaScript
+npm run compile
+
+# Watch mode - auto-recompile on file changes
+npm run watch
+
+# Run tests (if available)
+npm test
+
+# Package extension as .vsix
+vsce package
+```
+
+#### 7. Debug Configuration
+The project includes `.vscode/launch.json` for debugging:
+- Press `F5` to start debugging
+- Opens new VSCode window (Extension Development Host)
+- Breakpoints work in TypeScript source files
+- Console output in Debug Console
+
+#### 8. Common Development Tasks
+
+**Adding new dependencies:**
+```bash
+npm install <package-name>
+npm install --save-dev <dev-package>
+```
+
+**Updating dependencies:**
+```bash
+npm update
+```
+
+**Check for outdated packages:**
+```bash
+npm outdated
+```
+
+**Clean and rebuild:**
+```bash
+rm -rf node_modules out
+npm install
+npm run compile
+```
+
+## Development Workflow
+
+### Daily Development
+1. **Start watch mode** (auto-compile on save):
+   ```bash
+   npm run watch
+   ```
+
+2. **Press F5** to launch Extension Development Host
+
+3. **Make changes** in `src/` files
+
+4. **Reload extension** in Development Host:
+   - Press `Ctrl+R` (Windows/Linux) or `Cmd+R` (Mac)
+   - Or use Command Palette → "Developer: Reload Window"
+
+### Testing Changes
+1. Open `test/AppletonTop.twr` in Extension Development Host
+2. Place cursor on a timing path
+3. Click preview button to see graph
+4. Test zoom/pan features
+5. Verify highlighting works
+
+### Debugging
+1. Set breakpoints in TypeScript files (`.ts`)
+2. Press `F5` to start debugging
+3. Reproduce the issue in Extension Development Host
+4. Debugger pauses at breakpoints
+5. Inspect variables in Debug panel
+
+## Installation from Source
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/Chen-s-Private-Factory/VSCode-Plugin-Xilinx-Timing-Analyzer.git
+   cd VSCode-Plugin-Xilinx-Timing-Analyzer
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+   This will install:
+   - TypeScript compiler
+   - VSCode extension APIs
+   - Graphviz WASM module (@hpcc-js/wasm)
+   - Development tools
+
+3. **Compile TypeScript**
+   ```bash
+   npm run compile
+   ```
+   This compiles TypeScript files in `src/` to JavaScript in `out/`
+
+4. **Test the extension**
+   - Open the project in VSCode
+   - Press `F5` to launch Extension Development Host
+   - Open `test/AppletonTop.twr` in the new window
+   - Try the features!
+
 ## Project Overview
 A VSCode extension for analyzing Xilinx .twr (Timing Report) files with automatic path detection, hover information, visual highlighting, and Graphviz visualization.
 
