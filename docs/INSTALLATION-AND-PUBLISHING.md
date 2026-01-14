@@ -16,7 +16,7 @@ This is the quickest way to test the extension during development.
 
 1. **Open project in VSCode**
    ```bash
-   cd C:\Users\chen\xilinx-timing-analyzer
+   cd <your path to repo root>
    code .
    ```
 
@@ -53,7 +53,7 @@ This installs the extension permanently in your VSCode.
 2. **Install the .vsix file**
    - Option A: Command line
      ```bash
-     code --install-extension xilinx-timing-analyzer-0.1.0.vsix
+     code --install-extension xilinx-timing-report-analyzer-x.y.z.vsix
      ```
    
    - Option B: VSCode GUI
@@ -68,7 +68,7 @@ This installs the extension permanently in your VSCode.
 
 4. **Verify installation**
    - Open Extensions view
-   - Search for "Xilinx Timing Analyzer"
+   - Search for "Xilinx Timing Report Analyzer"
    - Should appear in the installed extensions list
 
 ### Method 3: Install from Marketplace
@@ -76,7 +76,7 @@ This installs the extension permanently in your VSCode.
 Once published (see [Publishing to Marketplace](#publishing-to-marketplace)):
 
 1. **Open Extensions view** (`Ctrl+Shift+X`)
-2. **Search** for "Xilinx Timing Analyzer"
+2. **Search** for "Xilinx Timing Report Analyzer"
 3. **Click Install**
 4. **Reload** VSCode if prompted
 
@@ -109,7 +109,7 @@ npm install -g @vscode/vsce
    vsce package
    ```
    
-   This creates `xilinx-timing-analyzer-0.1.0.vsix` in the project root.
+   This creates `xilinx-timing-report-analyzer-0.1.0.vsix` in the project root.
 
 4. **Verify package contents** (optional)
    ```bash
