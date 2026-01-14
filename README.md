@@ -2,7 +2,7 @@
 
 > NOTE: Every code and doc in this repo is created by **Github Copilot CLI** w/ **claude-sonnet-4.5** model
 
-A VSCode extension for analyzing Xilinx .twr (Timing Report) files and visualizing critical timing paths generated purely by AI.
+A purely AI Generated VSCode extension for offline analyzing Xilinx .twr (Timing Report) files and visualizing critical timing paths.
 
 ## Features
 
@@ -316,10 +316,6 @@ Additional documentation is available in the `docs/` directory:
 - [Format Support](docs/VIVADO-FORMAT-SUPPORT.md)
 - [Zoom Controls](docs/ZOOM-SUPPORT.md)
 
-## License
-
-MIT License - See LICENSE file for details
-
 ## Author
 
 Created for FPGA timing analysis and debugging, powered by AI.
@@ -344,26 +340,3 @@ Created for FPGA timing analysis and debugging, powered by AI.
 - Inspired by Xilinx Vivado/ISE timing analyzers
 - Created entirely with **GitHub Copilot CLI** and **Claude Sonnet 4.5**
 
-
-```
-xilinx-timing-analyzer/
-├── src/
-│   ├── extension.ts           # Main entry point
-│   ├── parser/
-│   │   └── twrParser.ts       # Parse .twr files
-│   ├── providers/
-│   │   ├── hoverProvider.ts   # Hover tooltips
-│   │   └── decorationProvider.ts # Text highlighting
-│   ├── visualization/
-│   │   └── graphPanel.ts      # Graphviz visualization
-│   └── types/
-│       └── timing.ts          # TypeScript interfaces
-```
-
-## License
-
-ISC
-
-## Version
-
-0.1.0 - Initial Release
