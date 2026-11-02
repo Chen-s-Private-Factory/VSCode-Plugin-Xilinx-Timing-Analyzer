@@ -67,15 +67,16 @@ export class TimingGraphPanel {
     private generateDotGraph(paths: TimingPath[]): string {
         let dot = 'digraph TimingPaths {\n';
         dot += '  rank=same;\n';
-        dot += '  rankdir=BT;\n';
+        //dot += '  rankdir=BT;\n';
         dot += '  nodesep=0.0;\n';
         dot += '  ranksep="0.0 equally";\n';
-        dot += 'layout=dot; size="8.5,11";ratio=fill;center=1;\n';
-        dot += '  node [shape=box, colorscheme=paired12, width=0.9, height=0.9, fixedsize=true];\n';
+        dot += '//layout=dot; size="8.5,11";ratio=fill;center=1;\n';
+        dot += '  node [shape=record];\n';
+        //dot += '  node [shape=record, colorscheme=paired12, width=0.9, height=0.9, fixedsize=true];\n';
         //dot += '  node [shape=plaintext, colorscheme=paired12];\n';
         dot += '  edge [style=invis,fontsize=9];\n';
         dot += '  splines=line;\n';
-        dot += '  graph [layout=dot,fontsize=200, compound=true];\n';
+        dot += '  //graph [layout=dot,fontsize=200, compound=true];\n';
         let tmp_dp = "";
 
         //dot += 'graph [layout=dot, size="8.5,11", ratio=fill, center=1];\n';
@@ -228,8 +229,7 @@ export class TimingGraphPanel {
         xy_copy = [...new Set(xy_copy)]; // rm duplicates slices, without this we have space for edge to the same slice (if some exists)
         console.log ("xy_copy "+xy_copy);
         //console.log (xy_copy.join (","));
-        dot += `subgraph cluster_left {style=filled;bgcolor="/rdylgn11/1:/rdylgn11/11"; gradientangle=135; subgraph cluster_device_slices {style=filled;
-        fillcolor="#ffffff00";\n`;
+        //dot += `subgraph cluster_left {style=filled;bgcolor="/rdylgn11/1:/rdylgn11/11"; gradientangle=135; subgraph cluster_device_slices {style=filled; fillcolor="#ffffff00";\n`;
         //dot += `edge [style = invis, arrowsize=0.1, penwidth=0.5, arrowhead="vee"];\n`;
         //dot += `nodesep = 0;\n`;
         //dot += `ranksep = 0;\n`;
@@ -256,7 +256,7 @@ export class TimingGraphPanel {
             if (prevNode) {
               //dot += `# ${label} ${element.xy}\n`; // debug
               let im = i%colors.length;
-              edges_tmp += `${prevNode} -> ${nodeId} [style = vis, color="${colors[color_i]}"];\n`;
+              edges_tmp += `struct0:${prevNode} -> struct0:${nodeId} [style = vis, color="${colors[color_i]}"];\n`;
               color_i++;
               if (color_i == colors.length) {
                 color_i = 0;
@@ -275,58 +275,64 @@ export class TimingGraphPanel {
         let lrc=`X0Y${yb-1}`; // L-R
         let llc=`X0Y0`; // start, L-L
         let x_s = "";
-        dot += '  peripheries=0;\n';
+        dot += `struct0 [ label="\n`;
         for (let x = 0; x < xb; x++) {
           let x_string: any[] = [];
-          dot += `subgraph cluster_node_${x} {\n`;
-        for (let y = 0; y < yb; y++) {
+          dot += `{`;
+          for (let y = yb-1; y >= 0; y--) {
             let xy = `X${x}Y${y}`;
             let yx = `Y${y}X${x}`;
             //margin=0, width=0, height=0, // points
             let vis = xy_copy.join(",").includes (xy.toUpperCase()+",");
-            if ((x == 0 && y == 0) || xy == first || xy == last) {
-              dot += `node [group=g${y}] ${xy} [style=filled, fillcolor=black, label=""];\n`;
+            dot += `<X${x}Y${y}>`;
+            //dot += `<X${x}Y${y}>X${x}Y${y}`;
+            if (x < xb) {
+              dot += `|`;
+            }
+            //if ((x == 0 && y == 0) || xy == first || xy == last) {
+            //  dot += `node [group=g${y}] ${xy} [style=filled, fillcolor=black, label=""];\n`;
             //} else if (xy == urc) {
             //  dot += `node [group=g${y}] ${xy} [style=filled, fillcolor=grey, label=""];\n`;
             //} else if (xy == ulc) {
             //  dot += `node [group=g${y}] ${xy} [style=filled, label="${xy}"];\n`;
             //} else if (xy == lrc) {
             //  dot += `node [group=g${y}] ${xy} [style=filled, label="${xy}"];\n`;
-            } else if (vis) {
-              dot += `node [group=g${y}] ${xy} [label="", style=vis];\n`;
-            } else {
-              dot += `node [group=g${y}] ${xy} [label="", style=vis];\n`; // invis
-            }
+            //} else if (vis) {
+            //  dot += `node [group=g${y}] ${xy} [label="", style=vis];\n`;
+            //} else {
+            //  dot += `node [group=g${y}] ${xy} [label="", style=vis];\n`; // invis
+            //}
             x_string.push (`${xy}`);
           }
-          dot += `}\n`;
-          const x_s_tmp = x_string.join (" -> ");
-          x_s += `subgraph cluster_${x} {\n`;
-          x_s += `${x_s_tmp};\n`;
-          x_s += `}\n`;
+          dot += `}|\n`;
+          //const x_s_tmp = x_string.join (" -> ");
+          //x_s += `subgraph cluster_${x} {\n`;
+          //x_s += `${x_s_tmp};\n`;
+          //x_s += `}\n`;
         }
+        dot += `"];\n`;
         //dot += `subgraph cluster_main_2 {\n`;
         dot += `${x_s}\n`;
         //dot += `}\n`;
         //console.log (x_s);
-        dot += `subgraph cluster_main_1 {\n`;
-        let x_r = "";
-          for (let y = 0; y < yb; y++) {
-          let x_rank: any[] = [];
-        for (let x = 0; x < xb; x++) {
-            let xy = `X${x}Y${y}`;
-            let yx = `Y${y}X${x}`;
-            x_rank.push (`${xy}`);
-          }
-          const x_r_tmp = x_rank.join (" ");
-          //x_r += `subgraph cluster_${x} { rank = same ${x_r_tmp} };\n`;
-          x_r += `{ rank = same ${x_r_tmp} };\n`;
-        }
-        dot += `${x_r}\n`;
-        dot += `}\n`;
-        dot += `}\n`;
+        //dot += `subgraph cluster_main_1 {\n`;
+        //let x_r = "";
+        //  for (let y = 0; y < yb; y++) {
+        //  let x_rank: any[] = [];
+        //for (let x = 0; x < xb; x++) {
+        //    let xy = `X${x}Y${y}`;
+        //    let yx = `Y${y}X${x}`;
+        //    x_rank.push (`${xy}`);
+        //  }
+        //  const x_r_tmp = x_rank.join (" ");
+        //  //x_r += `subgraph cluster_${x} { rank = same ${x_r_tmp} };\n`;
+        //  x_r += `{ rank = same ${x_r_tmp} };\n`;
+        //}
+        //dot += `${x_r}\n`;
+        //dot += `}\n`;
+        //dot += `}\n`;
         //console.log (x_r);
-        dot += `edge[style=solid, penwidth=20, constraint=false];\n`;
+        dot += `edge[style=solid, penwidth=1, constraint=false];\n`;
         dot += edges_tmp; 
         console.log (edges_tmp);
         dot += `}\n`;
