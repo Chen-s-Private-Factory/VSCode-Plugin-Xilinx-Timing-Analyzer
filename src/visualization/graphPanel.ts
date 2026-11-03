@@ -66,26 +66,16 @@ export class TimingGraphPanel {
 
     private generateDotGraph(paths: TimingPath[]): string {
         let dot = 'digraph TimingPaths {\n';
-        dot += '  rank=same;\n';
-        //dot += '  rankdir=BT;\n';
+        dot += '  style=filled;bgcolor="/rdylgn11/1:/rdylgn11/11"; gradientangle=135;\n';
+        dot += '  rankdir=BT;\n';
         dot += '  nodesep=0.0;\n';
         dot += '  ranksep="0.0 equally";\n';
-        dot += '//layout=dot; size="8.5,11";ratio=fill;center=1;\n';
-        dot += '  node [shape=record];\n';
-        //dot += '  node [shape=record, colorscheme=paired12, width=0.9, height=0.9, fixedsize=true];\n';
-        //dot += '  node [shape=plaintext, colorscheme=paired12];\n';
+        dot += '  graph [layout=dot, size="8.5,11", ratio=fill, center=1];\n';
+        dot += '  node [shape=box, colorscheme=paired12, width=1, height=1, fixedsize=true];\n';
         dot += '  edge [style=invis,fontsize=9];\n';
-        dot += '  splines=line;\n';
-        dot += '  //graph [layout=dot,fontsize=200, compound=true];\n';
+        dot += '  splines=false;\n';
+        dot += '  graph [layout=dot,fontsize=200, compound=true];\n';
         let tmp_dp = "";
-
-        //dot += 'graph [layout=dot, size="8.5,11", ratio=fill, center=1];\n';
-        //dot += 'graph [layout=dot, compound=true, page="8.5,11", ratio=fill, center=1];\n';
-        //dot += 'graph [layout=dot, page="8.5,11", ratio=fill, center=1];\n';
-        //dot += '  peripheries=2;\n';
-        //dot += '  concentrate=true;\n';
-        dot += '  justify=true;\n';
-        dot += '  dpi=96;\n';
         // Should only have one path (the one at cursor)
         if (paths.length === 0) {
             dot += '  empty [label="No timing path selected"];\n';
@@ -228,12 +218,6 @@ export class TimingGraphPanel {
         }
         xy_copy = [...new Set(xy_copy)]; // rm duplicates slices, without this we have space for edge to the same slice (if some exists)
         console.log ("xy_copy "+xy_copy);
-        //console.log (xy_copy.join (","));
-        //dot += `subgraph cluster_left {style=filled;bgcolor="/rdylgn11/1:/rdylgn11/11"; gradientangle=135; subgraph cluster_device_slices {style=filled; fillcolor="#ffffff00";\n`;
-        //dot += `edge [style = invis, arrowsize=0.1, penwidth=0.5, arrowhead="vee"];\n`;
-        //dot += `nodesep = 0;\n`;
-        //dot += `ranksep = 0;\n`;
-        //dot += `graph [ pad="0.5", nodesep="0.5", ranksep="2" ];\n`;
         let edges_tmp = String ();
         let color_i = 0;
         let colors=["red", "green", "blue", "brown", "darkorange", "gold4"];
@@ -244,19 +228,14 @@ export class TimingGraphPanel {
             const nodeId = xy_copy[i];
             if (i == 0) {
               first = nodeId;
-              //dot += `nodef [label="first"];\n`;
-              //dot += `nodef -> struct0:${first} [color="yellow"];\n`;
             }
             if (i == xy_copy.length - 1) {
               last = nodeId;
-              //dot += `nodel [label="last"];\n`;
-              //dot += `nodel -> struct0:${last} [color="yellow"];\n`;
             }
-            //const label = this.formatNodeLabel(element);
             if (prevNode) {
               //dot += `# ${label} ${element.xy}\n`; // debug
               let im = i%colors.length;
-              edges_tmp += `struct0:${prevNode} -> struct0:${nodeId} [style = vis, color="${colors[color_i]}"];\n`;
+              edges_tmp += `${prevNode} -> ${nodeId} [style = vis, color="${colors[color_i]}"];\n`;
               color_i++;
               if (color_i == colors.length) {
                 color_i = 0;
@@ -265,9 +244,6 @@ export class TimingGraphPanel {
             prevNode = nodeId;
           }
         }
-        //dot += `node0 [label="0,0"];\n`;
-        //dot += `node0 -> struct0:X0Y0 [color="black"];\n`;
-        //dot += `!!!!!!!!!DEBUG!!!!!!!!!!!!`;
         let xb=92;
         let yb=120;
         let urc=`X${xb-1}Y${yb-1}`; // U-R
@@ -275,71 +251,40 @@ export class TimingGraphPanel {
         let lrc=`X0Y${yb-1}`; // L-R
         let llc=`X0Y0`; // start, L-L
         let x_s = "";
-        dot += `struct0 [ label="\n`;
         for (let x = 0; x < xb; x++) {
           let x_string: any[] = [];
-          dot += `{`;
-          for (let y = yb-1; y >= 0; y--) {
+          dot += `node [ group = col${x} ]; `;
+          for (let y = 0; y < yb; y++) {
             let xy = `X${x}Y${y}`;
             let yx = `Y${y}X${x}`;
-            //margin=0, width=0, height=0, // points
-            let vis = xy_copy.join(",").includes (xy.toUpperCase()+",");
-            dot += `<X${x}Y${y}>`;
-            //dot += `<X${x}Y${y}>X${x}Y${y}`;
-            if (x < xb) {
-              dot += `|`;
-            }
-            //if ((x == 0 && y == 0) || xy == first || xy == last) {
-            //  dot += `node [group=g${y}] ${xy} [style=filled, fillcolor=black, label=""];\n`;
-            //} else if (xy == urc) {
-            //  dot += `node [group=g${y}] ${xy} [style=filled, fillcolor=grey, label=""];\n`;
-            //} else if (xy == ulc) {
-            //  dot += `node [group=g${y}] ${xy} [style=filled, label="${xy}"];\n`;
-            //} else if (xy == lrc) {
-            //  dot += `node [group=g${y}] ${xy} [style=filled, label="${xy}"];\n`;
-            //} else if (vis) {
-            //  dot += `node [group=g${y}] ${xy} [label="", style=vis];\n`;
-            //} else {
-            //  dot += `node [group=g${y}] ${xy} [label="", style=vis];\n`; // invis
-            //}
+            dot += `${xy}; `;
             x_string.push (`${xy}`);
           }
-          dot += `}|\n`;
-          //const x_s_tmp = x_string.join (" -> ");
-          //x_s += `subgraph cluster_${x} {\n`;
-          //x_s += `${x_s_tmp};\n`;
-          //x_s += `}\n`;
+          dot += `\n`;
+          const x_s_tmp = x_string.join (" -> ");
+          x_s += `${x_s_tmp} [style = invis];\n`;
         }
-        dot += `"];\n`;
-        //dot += `subgraph cluster_main_2 {\n`;
         dot += `${x_s}\n`;
-        //dot += `}\n`;
-        //console.log (x_s);
-        //dot += `subgraph cluster_main_1 {\n`;
-        //let x_r = "";
-        //  for (let y = 0; y < yb; y++) {
-        //  let x_rank: any[] = [];
-        //for (let x = 0; x < xb; x++) {
-        //    let xy = `X${x}Y${y}`;
-        //    let yx = `Y${y}X${x}`;
-        //    x_rank.push (`${xy}`);
-        //  }
-        //  const x_r_tmp = x_rank.join (" ");
-        //  //x_r += `subgraph cluster_${x} { rank = same ${x_r_tmp} };\n`;
-        //  x_r += `{ rank = same ${x_r_tmp} };\n`;
-        //}
-        //dot += `${x_r}\n`;
-        //dot += `}\n`;
-        //dot += `}\n`;
+        let x_r = "";
+        for (let y = 0; y < yb; y++) {
+          let x_rank: any[] = [];
+          for (let x = 0; x < xb; x++) {
+            let xy = `X${x}Y${y}`;
+            let yx = `Y${y}X${x}`;
+            x_rank.push (`${xy}`);
+          }
+          const x_r_tmp = x_rank.join ("->");
+          x_r += `{ rank = same ${x_r_tmp} };\n`;
+        }
+        dot += `${x_r}\n`;
         //console.log (x_r);
-        dot += `edge[style=solid, penwidth=1, constraint=false];\n`;
+        dot += `edge[style=solid, penwidth=20, constraint=false];\n`;
         dot += edges_tmp; 
         console.log (edges_tmp);
-        dot += `}\n`;
         //dot += tmp_dp;
         dot += `labelloc="t";\n`;
         dot += `label="${path.failed ? '❌' : '✅'} Timing Path: ${path.source} → ${path.destination}\\nSlack: ${path.slack.toFixed(3)}ns | Delay: ${path.delay.toFixed(3)}ns";\n`;
-        dot += `}\n\n`;
+        dot += `}\n\n`; 
         const fs = require('fs');
         fs.writeFile('logdot.txt', dot, function(err : any) {
           if (err) {
