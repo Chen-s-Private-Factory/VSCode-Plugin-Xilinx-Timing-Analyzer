@@ -2,7 +2,7 @@
   "name": "xilinx-timing-report-analyzer",
   "displayName": "Xilinx Timing Analyzer",
   "description": "Analyze Xilinx .twr timing reports and visualize critical paths",
-  "version": "0.1.1",
+  "version": "0.1.3",
   "publisher": "garyshere",
   "repository": {
     "type": "git",
@@ -76,7 +76,7 @@
     "pretest": "npm run compile"
   },
   "devDependencies": {
-    "@types/node": "^25.0.7",
+    "@types/node": "^25.9.9",
     "@types/vscode": "^1.108.1",
     "@vscode/test-electron": "^2.5.2",
     "esbuild": "^0.27.2",

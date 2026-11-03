@@ -1,3 +1,9 @@
+# Update - fast fixes (tested on VSCodium and Xilinx ISE 14.7 - xc3s1200e-fg320-4):
+- Add slices (92x120) and edges - svg output ~ 1-2sec
+![slices1](slices1.png)
+![slices2](slices2.png)
+![log output](log.jpg)
+
 # Xilinx Timing Report Analyzer
 
 > NOTE: Every code and doc in this repo is created by **Github Copilot CLI** w/ **claude-sonnet-4.5** model
